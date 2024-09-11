@@ -1,0 +1,80 @@
+// Returns a random DNA base
+const returnRandBase = () => {
+  const dnaBases = ['A', 'T', 'C', 'G']
+  return dnaBases[Math.floor(Math.random() * 4)] 
+}
+
+// Returns a random single strand of DNA containing 15 bases
+const mockUpStrand = () => {
+  const newStrand = []
+  for (let i = 0; i < 15; i++) {
+    newStrand.push(returnRandBase())
+  }
+  return newStrand
+}
+
+let ex2 = mockUpStrand();
+const pAequorFactory = (numb,dnaArray) => {
+  return {
+    _specimenNum: numb,
+    _dna: dnaArray,
+    mutate () {
+      let i = Math.floor(Math.random() * dnaArray.length);
+      let mutateDna = this._dna[i];
+      let randomDna = returnRandBase();
+      if (mutateDna !== randomDna) {
+        this._dna[i] = randomDna;
+      }
+      return this._dna;
+    },
+    compareDNA () {
+      let compareSum = 0;
+      for(let x = 0; x < this._dna.length; x++) {
+          if (this._dna[x] == ex2[x]) {
+            compareSum++;
+          }
+      }
+      return ((compareSum/15) * 100).toFixed(2) + "%"; 
+    },
+    willLikelySurvive () {
+      let surviveDna = 0;
+      for (let y = 0; y < this._dna.length; y++){
+        if (this._dna[y] == 'G' || this._dna[y] == 'C'){
+          surviveDna++;
+        }
+      }
+      surviveDna = (surviveDna/15) *100
+      if (surviveDna >= 60) {
+        return surviveDna;
+      } else {
+        return surviveDna;
+      }
+    },
+    complementStrand () {
+      let complementDna = [];
+      for (z = 0; z < this._dna.length; z++) {
+        switch (this._dna[z]) {
+          case 'A': complementDna.push('T')
+          break;
+          case 'T': complementDna.push('A')
+          break;
+          case 'C': complementDna.push('G')
+          break;
+          case 'G': complementDna.push('C')
+          break;
+          default: complementDna.push('Unknown')
+        }
+      }
+          return complementDna;
+    }
+
+  };
+};
+
+
+let ex = pAequorFactory(1,mockUpStrand());
+console.log(ex);
+console.log(ex.mutate());
+console.log(ex.compareDNA());
+console.log(ex.willLikelySurvive()); 
+console.log(ex.complementStrand());
